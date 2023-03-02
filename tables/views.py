@@ -73,7 +73,7 @@ class Login_view(APIView):
 
         return Response(serializer.data)
       
-        
+        # ==================comment
 # =========================================USERLIST
 class UserList_view(APIView):
     permission_classes = [IsAuthenticated]
