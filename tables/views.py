@@ -56,22 +56,18 @@ class Login_view(APIView):
     def post(self, request):
         email = request.data['email']
         password = request.data['password']
-
         user = User.objects.filter(email=email).first()
         if user is None:
             raise exceptions.AuthenticationFailed('Invalid Credentials')
         if not user.check_password(password):
             raise exceptions.AuthenticationFailed('Invalid Credentials')
 
-        refresh = RefreshToken.for_user(user.id)
-        user['token'] = {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        }
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
 
         serializer = UserSerializer(user)
 
-        return Response(serializer.data)
+        return Response(serializer.data, access_token)
       
         # ==================comment
 # =========================================USERLIST
